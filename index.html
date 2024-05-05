@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>The hash-algorithms Library &#8212; Hash Algorithms</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=7f12213a"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="the-hash-algorithms-library">
+<h1>The hash-algorithms Library<a class="headerlink" href="#the-hash-algorithms-library" title="Permalink to this heading">¶</a></h1>
+<p>The hash-algorithms library provides consistent access to a variety of
+hash algorithms:</p>
+<ul class="simple">
+<li><p>md5</p></li>
+<li><p>sha1</p></li>
+<li><p>sha224</p></li>
+<li><p>sha256</p></li>
+<li><p>sha384</p></li>
+<li><p>sha512</p></li>
+</ul>
+<p>Hashing an entire string at once can be done via the functions named
+after each hash:</p>
+<div class="highlight-dylan notranslate"><div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sha1</span><span class="p">(</span><span class="s">&quot;Some text&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If you want a printable digest, use <a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([byte-vector])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;byte-vector&gt;)</span></code></a>:</p>
+<div class="highlight-dylan notranslate"><div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">hexdigest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hexdigest</span><span class="p">(</span><span class="n">sha1</span><span class="p">(</span><span class="s">&quot;Some text&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>If you want to hash multiple strings into a single digest (useful when streaming),
+you can use the <a class="reference internal" href="#hash-algorithms:hash-algorithms:update-hash"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">update-hash</span></code></a> and <a class="reference internal" href="#hash-algorithms:hash-algorithms:digest"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">digest</span></code></a> functions:</p>
+<div class="highlight-dylan notranslate"><div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="nc">&lt;sha1&gt;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Some&quot;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">digest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">(</span><span class="n">hash</span><span class="p">);</span>
+<span class="c1">// hexdigest works on hashes as well:</span>
+<span class="k">let</span><span class="w"> </span><span class="n">hexdigest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hexdigest</span><span class="p">(</span><span class="n">hash</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="the-hash-algorithms-module">
+<h2>The hash-algorithms Module<a class="headerlink" href="#the-hash-algorithms-module" title="Permalink to this heading">¶</a></h2>
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[hash]">
+<span class="sig-name descname"><span class="pre">&lt;hash&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[hash]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://opendylan.org/books/drm/Object_Classes#object"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;object&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan generic-function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:digest-size">
+<span class="sig-name descname"><span class="pre">digest-size</span></span> <em class="property"><span class="pre">Generic</span> <span class="pre">function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:digest-size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the digest size of the hash algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>digest-size (hash) =&gt; (digest-size)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hash</strong> – An instance of <a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest-size</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Number_Classes#integer"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;integer&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan generic-function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:block-size">
+<span class="sig-name descname"><span class="pre">block-size</span></span> <em class="property"><span class="pre">Generic</span> <span class="pre">function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:block-size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the block size of the hash algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>block-size (hash) =&gt; (block-size)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hash</strong> – An instance of <a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>block-size</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Number_Classes#integer"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;integer&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan generic-function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:update-hash">
+<span class="sig-name descname"><span class="pre">update-hash</span></span> <em class="property"><span class="pre">Generic</span> <span class="pre">function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:update-hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add more data to the hash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update-hash (hash, input) =&gt; ()</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hash</strong> – An instance of <a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a>.</p></li>
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Discussion<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>Add more data to the hash. This is useful when streaming data or the data is
+available in multiple strings and you wish to avoid the overhead of concatenation.</p>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">update-hash</span></code> multiple times is equivalent to calling it once with
+a concatenation of the arguments:</p>
+<div class="highlight-dylan notranslate"><div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">hash-separate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="nc">&lt;sha1&gt;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash-separate</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Some&quot;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash-separate</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash-separate</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;text&quot;</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">digest-separate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">(</span><span class="n">hash-separate</span><span class="p">);</span>
+
+<span class="k">let</span><span class="w"> </span><span class="n">hash-combined</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="nc">&lt;sha1&gt;</span><span class="p">);</span>
+<span class="n">update-hash</span><span class="p">(</span><span class="n">hash-combined</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Some text&quot;</span><span class="p">);</span>
+<span class="k">let</span><span class="w"> </span><span class="n">digest-combined</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">digest</span><span class="p">(</span><span class="n">hash-combined</span><span class="p">);</span>
+
+<span class="c1">// digest-separate and digest-combined will be the same</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">See also<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:digest"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">digest</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([hash])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;hash&gt;)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([byte-vector])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;byte-vector&gt;)</span></code></a></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan generic-function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:digest">
+<span class="sig-name descname"><span class="pre">digest</span></span> <em class="property"><span class="pre">Generic</span> <span class="pre">function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:digest" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>digest (hash) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hash</strong> – An instance of <a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Discussion<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>The return value <em>digest</em> is binary data and may include null bytes. To display
+this result in text form, use <a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([hash])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;hash&gt;)</span></code></a> or
+<a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([byte-vector])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;byte-vector&gt;)</span></code></a>.</p>
+<p>Use <a class="reference internal" href="#hash-algorithms:hash-algorithms:update-hash"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">update-hash</span></code></a> to add data to the hash.</p>
+</p>
+</dd>
+<dt class="field-odd">See also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:update-hash"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">update-hash</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([hash])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;hash&gt;)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([byte-vector])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;byte-vector&gt;)</span></code></a></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan method">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:hexdigest([hash])">
+<span class="sig-name descname"><span class="pre">hexdigest(&lt;hash&gt;)</span></span> <em class="property"><span class="pre">Method</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:hexdigest([hash])" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the digest for the given hash as a hexadecimal string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>hexdigest (hash) =&gt; (hexdigest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>hash</strong> – An instance of <a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hexdigest</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">See also<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:digest"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">digest</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([byte-vector])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;byte-vector&gt;)</span></code></a></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan method">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:hexdigest([byte-vector])">
+<span class="sig-name descname"><span class="pre">hexdigest(&lt;byte-vector&gt;)</span></span> <em class="property"><span class="pre">Method</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:hexdigest([byte-vector])" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the digest given as a hexadecimal string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>hexdigest (digest) =&gt; (hexdigest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hexdigest</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">See also<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:digest"><code class="xref dylan dylan-gf docutils literal notranslate"><span class="pre">digest</span></code></a></p></li>
+<li><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:hexdigest([hash])"><code class="xref dylan dylan-meth docutils literal notranslate"><span class="pre">hexdigest(&lt;hash&gt;)</span></code></a></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="md5">
+<h3>MD5<a class="headerlink" href="#md5" title="Permalink to this heading">¶</a></h3>
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[md5]">
+<span class="sig-name descname"><span class="pre">&lt;md5&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[md5]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:md5">
+<span class="sig-name descname"><span class="pre">md5</span></span> <em class="property"><span class="pre">Function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:md5" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>md5 (input) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="sha-1">
+<h3>SHA-1<a class="headerlink" href="#sha-1" title="Permalink to this heading">¶</a></h3>
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[sha1]">
+<span class="sig-name descname"><span class="pre">&lt;sha1&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[sha1]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:sha1">
+<span class="sig-name descname"><span class="pre">sha1</span></span> <em class="property"><span class="pre">Function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:sha1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sha1 (input) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="sha-2">
+<h3>SHA-2<a class="headerlink" href="#sha-2" title="Permalink to this heading">¶</a></h3>
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[sha256]">
+<span class="sig-name descname"><span class="pre">&lt;sha256&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[sha256]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:sha256">
+<span class="sig-name descname"><span class="pre">sha256</span></span> <em class="property"><span class="pre">Function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:sha256" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sha256 (input) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[sha224]">
+<span class="sig-name descname"><span class="pre">&lt;sha224&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[sha224]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:sha224">
+<span class="sig-name descname"><span class="pre">sha224</span></span> <em class="property"><span class="pre">Function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:sha224" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sha224 (input) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[sha384]">
+<span class="sig-name descname"><span class="pre">&lt;sha384&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[sha384]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:sha384">
+<span class="sig-name descname"><span class="pre">sha384</span></span> <em class="property"><span class="pre">Function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:sha384" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sha384 (input) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan class">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:[sha512]">
+<span class="sig-name descname"><span class="pre">&lt;sha512&gt;</span></span> <em class="property"><span class="pre">Class</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:[sha512]" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Superclasses<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#hash-algorithms:hash-algorithms:[hash]"><code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;hash&gt;</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="dylan function">
+<dt class="sig sig-object dylan-api dylan" id="hash-algorithms:hash-algorithms:sha512">
+<span class="sig-name descname"><span class="pre">sha512</span></span> <em class="property"><span class="pre">Function</span></em><a class="headerlink" href="#hash-algorithms:hash-algorithms:sha512" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Signature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sha512 (input) =&gt; (digest)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>input</strong> – An instance of <a class="reference external" href="https://opendylan.org/books/drm/Collection_Classes#byte-string"><code class="xref drm docutils literal notranslate"><span class="pre">&lt;byte-string&gt;</span></code></a>, <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;buffer&gt;</span></code> or <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>digest</strong> – An instance of <code class="xref dylan dylan-class docutils literal notranslate"><span class="pre">&lt;byte-vector&gt;</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Hash Algorithms</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Hannes Mehnert.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
